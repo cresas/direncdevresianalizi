@@ -1,0 +1,2914 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Direnç Devresi Analizi - Güncellenmiş (2025-10-08)</title>
+    <style>
+        /* CSS Variables - Modern Space Theme */
+        :root {
+            --deep-space-blue: #0D1117;
+            --night-purple: #18122B;
+            --neon-cyan: #00F5FF;
+            --energetic-magenta: #E600FF;
+            --near-white: #E6EDF3;
+            --light-gray: #8B949E;
+            --card-bg: rgba(22, 27, 34, 0.6);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --radius: 8px;
+            --success-green: #06d6a0;
+            --warning-yellow: #ffd166;
+            --danger-red: #e74c3c;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--deep-space-blue) 0%, var(--night-purple) 100%);
+            color: var(--near-white);
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 1rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .header-gradient {
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--energetic-magenta) 100%);
+            color: var(--near-white);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 280px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--card-border);
+            padding: 1rem;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            flex-shrink: 0;
+            max-height: 90vh;
+        }
+
+        .left-panel.collapsed {
+            width: 280px; /* Orijinal genişlik korunuyor */
+            padding: 1rem; /* Orijinal padding korunuyor */
+        }
+
+        .left-panel.collapsed .panel-content {
+            display: none;
+        }
+
+        .left-panel.collapsed .panel-header {
+            display: flex !important;
+            justify-content: space-between; /* Orijinal layout korunuyor */
+            align-items: center; /* Orijinal layout korunuyor */
+        }
+
+        .left-panel.collapsed .panel-title {
+            font-size: 0.9rem !important; /* Orijinal font boyutu korunuyor */
+            display: block !important;
+            color: var(--neon-cyan); /* Orijinal renk korunuyor */
+            text-shadow: 0 0 10px var(--neon-cyan); /* Orijinal efekt korunuyor */
+        }
+
+        .left-panel.collapsed .toggle-btn {
+            /* Orijinal button stilleri korunuyor */
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 0.5rem;
+            border-radius: 8px;
+            min-width: 40px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .panel-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            min-width: 40px;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+        }
+
+        .toggle-btn:hover {
+            background: rgba(0, 245, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
+        /* Connection Types Cards */
+        .connection-type {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .connection-type:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+        }
+
+        .connection-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .connection-header .icon {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .series { color: var(--neon-cyan); }
+        .parallel { color: var(--success-green); }
+        .mixed { color: var(--energetic-magenta); }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .connection-desc {
+            color: var(--light-gray);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Center Area */
+        .center-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+
+        .simulation-area {
+            flex: 0 1 auto;
+            margin-bottom: 0.5rem;
+            background-color: rgba(13, 25, 41, 0.8);
+            background-image: 
+                linear-gradient(rgba(0, 245, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(rgba(0, 245, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.08) 1px, transparent 1px);
+            background-size: 20px 20px, 20px 20px, 60px 60px, 60px 60px;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.1);
+        }
+
+        .simulation-title {
+            display: none;
+        }
+
+        /* Simulation Tools */
+        .simulation-tools {
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .tools-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--energetic-magenta);
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 10px var(--energetic-magenta);
+        }
+
+        .tools-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Example Circuits */
+        .example-section {
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .example-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            margin-bottom: 0.75rem;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Results Area */
+        .results-area {
+            display: flex;
+            gap: 0.75rem;
+            min-height: auto;
+        }
+
+        .results-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 0.75rem;
+            flex: 0 1 auto;
+            min-height: auto;
+        }
+
+        .results-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .equivalent-resistance {
+            font-size: 1.1rem;
+            color: var(--energetic-magenta);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculation-steps {
+            color: var(--light-gray);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .calculation-steps-content {
+            max-height: 130px;
+            overflow-y: auto;
+        }
+
+        .step {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* Modern Buttons */
+        .modern-button {
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--neon-cyan);
+            color: var(--deep-space-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 245, 255, 0.1);
+        }
+
+        .btn-success {
+            background-color: var(--success-green);
+            color: var(--deep-space-blue);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(6, 214, 160, 0.5);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-red);
+            color: var(--near-white);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+        }
+
+        .btn-magenta {
+            background-color: var(--energetic-magenta);
+            color: var(--near-white);
+        }
+
+        .btn-magenta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(230, 0, 255, 0.5);
+        }
+
+        /* Canvas and Components */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: auto;
+            background-color: rgba(13, 25, 41, 0.4);
+            background-image: 
+                linear-gradient(rgba(0, 245, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px);
+            background-size: 15px 15px, 15px 15px, 45px 45px, 45px 45px;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+            -webkit-overflow-scrolling: touch;
+            min-width: 500px;
+            margin-bottom: 1rem;
+            cursor: grab;
+        }
+
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+
+
+
+        .component {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            z-index: 5;
+            touch-action: none;
+            /* Remove transition for performance - no kasma */
+        }
+
+        /* Beautiful hover effect for components - no transition for performance */
+        .component:hover {
+            /* Remove all hover transforms for better performance */
+        }
+
+        /* Dragging state for components - instant feedback, no transition */
+        .component.dragging {
+            cursor: grabbing !important;
+            /* Remove transform for better performance */
+            box-shadow: 0 0 30px var(--neon-cyan), 0 0 60px rgba(0, 245, 255, 0.6) !important;
+            z-index: 1000 !important;
+            opacity: 0.9 !important;
+        }
+
+        .resistor, .battery {
+            width: 120px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 11px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            /* Add prominent borders */
+            border: 3px solid var(--neon-cyan);
+        }
+
+        .resistor-body, .battery-body {
+            width: 80px;
+            height: 30px;
+            border: 3px solid var(--warning-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            /* Prominent borders for visibility */
+        }
+
+        .resistor-body {
+            background-color: #ffd166;
+            border: 3px solid var(--warning-yellow);
+            /* Prominent yellow border for resistors */
+        }
+
+        .battery-body {
+            background-color: #06d6a0;
+            border: 3px solid var(--neon-cyan);
+            /* Prominent cyan border for batteries */
+        }
+
+        .battery {
+            width: 120px;
+            height: 40px;
+        }
+
+        .battery-body {
+            width: 80px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--success-green) 0%, #4ecdc4 100%);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(6, 214, 160, 0.3);
+        }
+
+        .battery-symbol {
+            display: flex;
+            align-items: center;
+        }
+
+        .battery-line {
+            width: 3px;
+            height: 20px;
+            background-color: var(--deep-space-blue);
+            margin: 0 3px;
+        }
+
+        .battery-line.small {
+            height: 10px;
+        }
+
+        .resistor-value, .battery-value {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(13, 17, 23, 0.95);
+            color: var(--neon-cyan);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid var(--neon-cyan);
+            /* Bring back prominent styling for values */
+        }
+
+        .edit-button, .delete-button {
+            position: absolute;
+            top: -8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            /* Remove transition for performance */
+            z-index: 15;
+            border: 1px solid var(--deep-space-blue);
+        }
+
+        .edit-button {
+            right: -8px;
+            background-color: var(--neon-cyan);
+            color: var(--deep-space-blue);
+            box-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
+        }
+
+        .edit-button:hover {
+            background-color: var(--energetic-magenta);
+            color: var(--near-white);
+            box-shadow: 0 0 12px rgba(230, 0, 255, 0.7);
+        }
+
+        .delete-button {
+            left: -8px;
+            background-color: var(--danger-red);
+            color: var(--near-white);
+            box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+        }
+
+        .delete-button:hover {
+            background-color: #c0392b;
+            box-shadow: 0 0 12px rgba(192, 57, 43, 0.7);
+        }
+
+        .connection-point {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--neon-cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            border: 2px solid var(--deep-space-blue);
+            /* Remove transition for performance */
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        }
+
+        .left-point {
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .right-point {
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .connection-point:hover {
+            /* Remove hover transforms for performance */
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+        }
+
+        .connection-point.active {
+            background-color: var(--energetic-magenta) !important;
+            box-shadow: 0 0 18px var(--energetic-magenta);
+            /* Remove transform for performance */
+        }
+
+        .wire {
+            position: absolute;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--energetic-magenta) 100%);
+            z-index: 1;
+            pointer-events: none;
+            box-shadow: 0 0 8px rgba(0, 245, 255, 0.4);
+        }
+
+        /* Modals */
+        .value-modal, .manual-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .value-modal.active, .manual-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .value-modal-container, .manual-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .value-modal.active .value-modal-container,
+        .manual-modal.active .manual-container {
+            transform: scale(1);
+        }
+
+        .manual-container {
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .value-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--near-white);
+            font-size: 1rem;
+        }
+
+        .value-modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--near-white);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .modal-close:hover {
+            background: var(--danger-red);
+        }
+
+        /* Manual Styles */
+        .manual-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .manual-section h3 {
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .bg-info-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .manual-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            background: var(--energetic-magenta);
+            color: var(--near-white);
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .step-content h4 {
+            color: var(--neon-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .step-content p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Example circuit buttons */
+        .example-circuit-btn {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            color: var(--near-white);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+        }
+
+        .example-circuit-btn:hover {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .nasil-kullanilir-btn {
+            width: 100%;
+            margin-bottom: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+        }
+
+        .nasil-kullanilir-btn:hover {
+            background: rgba(0, 245, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: var(--near-white);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                width: 100%;
+                order: 2;
+                flex-shrink: 1;
+                max-height: none;
+                padding: 0.75rem;
+            }
+
+            .left-panel.collapsed {
+                width: 280px !important; /* Desktop ile aynı genişlik */
+                order: 2;
+                margin: 0 auto; /* Ortalanır */
+                padding: 1rem !important; /* Orijinal padding */
+            }
+
+            .left-panel.collapsed .panel-header {
+                display: flex !important;
+                justify-content: space-between !important; /* Orijinal layout korunuyor */
+                align-items: center !important;
+            }
+
+            .left-panel.collapsed .panel-title {
+                display: block !important;
+                font-size: 0.9rem !important; /* Orijinal font boyutu korunuyor */
+                color: var(--neon-cyan) !important;
+                text-shadow: 0 0 10px var(--neon-cyan) !important;
+            }
+
+            .center-area {
+                order: 1;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .simulation-area {
+                margin-bottom: 0.25rem;
+            }
+
+            .header {
+                padding: 0.75rem;
+            }
+
+            .header-gradient {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+                padding: 0.5rem 1rem;
+            }
+
+            .canvas-container {
+                min-width: 100%;
+                height: 300px;
+                margin-bottom: 0.5rem;
+            }
+
+            .simulation-tools {
+                margin-bottom: 0.5rem;
+            }
+
+            .tools-buttons, .example-buttons {
+                justify-content: center;
+                gap: 0.4rem;
+            }
+
+            .results-area {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .results-card {
+                padding: 0.5rem;
+            }
+
+            .calculation-steps {
+                max-height: 120px;
+            }
+
+            .calculation-steps-content {
+                max-height: 100px;
+            }
+
+            .step {
+                margin-bottom: 0.4rem;
+                padding: 0.4rem;
+                font-size: 0.75rem;
+            }
+
+            .modern-button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+            }
+
+            .example-circuit-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.65rem;
+            }
+
+            body {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            .app-container {
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            /* Better mobile scrolling */
+            .canvas-container {
+                touch-action: pan-x pan-y;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .header-gradient h2 {
+                font-size: 1rem;
+            }
+
+            .canvas-container {
+                height: 250px;
+                min-width: 100%;
+                margin-bottom: 0.4rem;
+            }
+
+            .center-area {
+                padding: 0.5rem;
+                gap: 0.4rem;
+            }
+
+            .simulation-area {
+                margin-bottom: 0.2rem;
+            }
+
+            .simulation-tools {
+                margin-bottom: 0.4rem;
+            }
+
+            .tools-buttons {
+                gap: 0.3rem;
+            }
+
+            .modern-button {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.65rem;
+            }
+
+            .results-card {
+                padding: 0.4rem;
+            }
+
+            .calculation-steps {
+                max-height: 100px;
+            }
+
+            .calculation-steps-content {
+                max-height: 80px;
+            }
+
+            .equivalent-resistance {
+                font-size: 1rem;
+            }
+
+            .left-panel {
+                padding: 0.5rem;
+            }
+
+            .left-panel.collapsed {
+                width: 280px !important; /* Desktop ile aynı genişlik */
+                margin: 0 auto; /* Ortalanır */
+                padding: 1rem !important; /* Orijinal padding */
+            }
+
+            .left-panel.collapsed .panel-header {
+                display: flex !important;
+                justify-content: space-between !important; /* Orijinal layout korunuyor */
+                align-items: center !important;
+            }
+
+            .left-panel.collapsed .panel-title {
+                display: block !important;
+                font-size: 0.9rem !important; /* Orijinal font boyutu korunuyor */
+                color: var(--neon-cyan) !important;
+                text-shadow: 0 0 10px var(--neon-cyan) !important;
+            }
+        }
+
+        /* Animation for new components */
+        @keyframes highlightNew {
+            0% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Shake animation for collision feedback */
+        @keyframes shake {
+            0%, 100% { transform: scale(1.05) translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: scale(1.05) translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: scale(1.05) translateX(3px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Modern Direnç Devresi Analizi</h1>
+            <div class="header-gradient">
+                <div>
+                    <h2>Dirençlerin Bağlanması ve Hesaplanması</h2>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">Seri, Paralel ve Karışık Devreler için İnteraktif Simülasyon</p>
+                    <p style="font-size: 0.7rem; opacity: 0.7; margin-top: 0.5rem;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel -->
+            <div class="left-panel" id="leftPanel">
+                <div class="panel-header">
+                    <div class="panel-title">Bağlantı Türleri</div>
+                    <button class="toggle-btn" id="togglePanelBtn" title="Paneli Göster/Gizle">
+                        <span id="toggleIcon">−</span>
+                    </button>
+                </div>
+
+                <div class="panel-content">
+                    <div class="connection-type">
+                        <div class="connection-header series">
+                            <span class="icon">⚡</span>
+                            <span>Seri Bağlantı</span>
+                        </div>
+                        <div class="connection-desc">
+                            Dirençler uç uca bağlandığında, toplam direnç tüm dirençlerin toplamına eşittir.
+                        </div>
+                        <div class="formula">
+                            R<sub>toplam</sub> = R<sub>1</sub> + R<sub>2</sub> + ... + R<sub>n</sub>
+                        </div>
+                    </div>
+
+                    <div class="connection-type">
+                        <div class="connection-header parallel">
+                            <span class="icon">🔀</span>
+                            <span>Paralel Bağlantı</span>
+                        </div>
+                        <div class="connection-desc">
+                            Dirençler paralel bağlandığında, toplam direnç şu formülle hesaplanır:
+                        </div>
+                        <div class="formula">
+                            1/R<sub>toplam</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + ... + 1/R<sub>n</sub>
+                        </div>
+                    </div>
+
+                    <div class="connection-type">
+                        <div class="connection-header mixed">
+                            <span class="icon">🔄</span>
+                            <span>Karışık Bağlantı</span>
+                        </div>
+                        <div class="connection-desc">
+                            Karışık devrelerde, önce en içteki grupları (seri veya paralel) sadeleştirip, adım adım ilerleyerek toplam direnci buluruz.
+                        </div>
+                    </div>
+
+                    <button class="nasil-kullanilir-btn" id="showManualBtn">
+                        <span>📖</span> Kullanım Kılavuzu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Center Area -->
+            <div class="center-area">
+                <!-- Simulation Area -->
+                <div class="simulation-area">
+                    <div id="canvas" class="canvas-container">
+                        <!-- Simple canvas without zoom container -->
+                    </div>
+                </div>
+
+                <!-- Simulation Tools -->
+                <div class="simulation-tools">
+                    <div class="tools-title">Simülasyon Araçları</div>
+                    <div class="tools-buttons">
+                        <button id="addResistor" class="modern-button btn-primary">
+                            <span>⚡</span> Direnç Ekle
+                        </button>
+                        <button id="addBattery" class="modern-button btn-success">
+                            <span>🔋</span> Üreteç Ekle
+                        </button>
+                        <button id="calculateResistance" class="modern-button btn-magenta">
+                            <span>🧮</span> Eş Değer Direnci Hesapla
+                        </button>
+                        <button id="clearCanvas" class="modern-button btn-danger">
+                            <span>🗑️</span> Temizle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Example Circuits -->
+                <div class="example-section">
+                    <div class="example-title">Örnek Devreler</div>
+                    <div class="example-buttons">
+                        <button class="example-circuit-btn" data-circuit="parallel-6-3-series-100">6Ω ve 3Ω paralel + 100Ω seri</button>
+                        <button class="example-circuit-btn" data-circuit="series">Seri Devre (10Ω + 20Ω + 30Ω)</button>
+                        <button class="example-circuit-btn" data-circuit="parallel">Paralel Devre (100Ω || 100Ω || 100Ω)</button>
+                        <button class="example-circuit-btn" data-circuit="mixed-complex">Karışık Devre (Kompleks)</button>
+                    </div>
+                </div>
+
+                <!-- Results Area -->
+                <div class="results-area">
+                    <div class="results-card">
+                        <div class="results-title">Devre Sonuçları</div>
+                        <div class="equivalent-resistance" id="calculationResult" style="display: none;">
+                            Eş Değer Direnç: <span id="calculatedValue">0</span> Ω
+                        </div>
+                        <div style="color: var(--light-gray); font-size: 0.8rem;">💡 Hesaplamak için "Eş Değer Direnci Hesapla" butonuna tıklayın.</div>
+                    </div>
+                    
+                    <div class="results-card">
+                        <div class="results-title">Hesaplama Adımları</div>
+                        <div class="calculation-steps" id="calculationSteps" style="display: none;">
+                            <div class="calculation-steps-content" id="stepsContent"></div>
+                        </div>
+                        <div style="color: var(--light-gray); font-size: 0.8rem;">⚙️ Hesaplama adımları burada gösterilecek.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip Element -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- Value Input Modal -->
+    <div id="valueModal" class="value-modal">
+        <div class="value-modal-container">
+            <h3 id="valueModalTitle">Direnç Değerini Ayarla</h3>
+            <p>Yeni değeri girin:</p>
+            <input type="number" id="valueInput" class="value-input" min="0.1" step="0.1">
+            <div class="value-modal-buttons">
+                <button id="cancelValueBtn" class="modern-button btn-secondary">❌ İptal</button>
+                <button id="saveValueBtn" class="modern-button btn-success">✅ Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Manual Modal -->
+    <div id="manualModal" class="manual-modal">
+        <div class="manual-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="color: var(--neon-cyan); font-size: 1.5rem;">📚 Direnç Devresi Analizi - Kullanım Kılavuzu</h2>
+                <button id="closeManualBtn" class="modal-close">✕</button>
+            </div>
+
+            <div class="manual-section">
+                <h3>🔬 Genel Bilgiler</h3>
+                <p style="color: var(--light-gray); margin-bottom: 0.5rem;">Bu uygulama, elektrik devrelerindeki dirençlerin seri, paralel ve karışık bağlantılarını simüle etmek ve eşdeğer direnci hesaplamak için tasarlanmıştır. Fizik ve elektrik derslerinde öğrenilen direnç hesaplama yöntemlerini uygulamalı olarak gösterir.</p>
+                <p style="color: var(--light-gray);">Uygulama, dirençleri sürükleyip bırakarak yerleştirebilir, bağlantı noktalarını tıklayarak devre oluşturabilir ve sonuçları hesaplayabilirsiniz.</p>
+            </div>
+
+            <div class="manual-section">
+                <h3>⚡ Devre Elemanları</h3>
+                
+                <div class="bg-info-card">
+                    <h4>🟡 Direnç</h4>
+                    <p style="color: var(--light-gray);">Sarı renkli dikdörtgen şeklindeki elemanlardır. Elektrik akımına karşı direnç gösterirler ve Ohm (Ω) birimi ile ifade edilirler.</p>
+                </div>
+                
+                <div class="bg-info-card">
+                    <h4>🟢 Üreteç (Batarya)</h4>
+                    <p style="color: var(--light-gray);">Yeşil renkli elemanlardır. Devreye elektrik enerjisi sağlarlar ve Volt (V) birimi ile ifade edilirler. Bu simülasyonda hesaplamalar için gerekli değildir, ancak gerçek bir devreyi temsil etmek için kullanılabilir.</p>
+                </div>
+            </div>
+
+            <div class="manual-section">
+                <h3>📋 Adım Adım Kullanım</h3>
+                
+                <div class="manual-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Devre Elemanı Ekleme</h4>
+                        <p>"Direnç Ekle" veya "Üreteç Ekle" butonlarına tıklayarak devreye yeni elemanlar ekleyebilirsiniz. Tıkladıktan sonra açılan pencerede eleman değerini (direnç için Ohm, üreteç için Volt) girmeniz gerekir.</p>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Elemanları Konumlandırma</h4>
+                        <p>Eklenen elemanları fare ile sürükleyerek çalışma alanında istediğiniz konuma yerleştirebilirsiniz. Elemanın üzerine tıklayıp fare tuşunu basılı tutarak sürükleyin ve istediğiniz yerde bırakın.</p>
+                    </div>
+                </div>
+                
+                <div class="manual-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Bağlantı Oluşturma</h4>
+                        <p>Devre elemanlarının köşelerinde bulunan küçük mavi noktalara tıklayarak bağlantı oluşturabilirsiniz. İlk bağlantı noktasına tıkladıktan sonra ikinci bağlantı noktasına tıklayarak tel bağlantısı oluşturursunuz.</p>
+                    </div>
+                </div>
+
+                <div class="manual-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Hesaplama</h4>
+                        <p>"Eş Değer Direnci Hesapla" butonuna tıklayarak devrenin toplam direncini hesaplayabilirsiniz. Hesaplama sonucu ve adımları ekranın alt kısmında gösterilir.</p>
+                    </div>
+                </div>
+
+                <div class="manual-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Değer Düzenleme</h4>
+                        <p>Herhangi bir direnç veya üreteç elemanına çift tıklayarak değerini değiştirebilirsiniz. Açılan pencerede yeni değeri girin ve kaydedin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+
+            const addResistorBtn = document.getElementById('addResistor');
+            const addBatteryBtn = document.getElementById('addBattery');
+            const clearCanvasBtn = document.getElementById('clearCanvas');
+            const calculateResistanceBtn = document.getElementById('calculateResistance');
+            const calculationResult = document.getElementById('calculationResult');
+            const calculatedValue = document.getElementById('calculatedValue');
+            const calculationSteps = document.getElementById('calculationSteps');
+            const stepsContent = document.getElementById('stepsContent');
+            const exampleCircuitBtns = document.querySelectorAll('.example-circuit-btn');
+            
+            // Initialize canvas for proper scrolling (reasonable size)
+            canvas.style.minHeight = '500px';
+            canvas.style.minWidth = '700px';
+            canvas.style.position = 'relative';
+            
+            // DEBUG: Add general click listener to canvas to track all clicks
+            // Tooltip element
+            const tooltip = document.getElementById('tooltip');
+            
+            // Manual modal elements
+            const showManualBtn = document.getElementById('showManualBtn');
+            const manualModal = document.getElementById('manualModal');
+            const closeManualBtn = document.getElementById('closeManualBtn');
+            const howToUseBtn = document.getElementById('howToUseBtn');
+            
+            // Panel toggle
+            const togglePanelBtn = document.getElementById('togglePanelBtn');
+            const leftPanel = document.getElementById('leftPanel');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            // Show manual modal
+            showManualBtn.addEventListener('click', function() {
+                manualModal.classList.add('active');
+            });
+            
+            // Close manual modal
+            closeManualBtn.addEventListener('click', function() {
+                manualModal.classList.remove('active');
+            });
+            
+            // Panel toggle functionality
+            togglePanelBtn.addEventListener('click', function() {
+                leftPanel.classList.toggle('collapsed');
+                toggleIcon.textContent = leftPanel.classList.contains('collapsed') ? '+' : '−';
+            });
+            
+            // Close manual when clicking outside
+            manualModal.addEventListener('click', function(e) {
+                if (e.target === manualModal) {
+                    manualModal.classList.remove('active');
+                }
+            });
+            
+            // Modal elements
+            const valueModal = document.getElementById('valueModal');
+            const valueModalTitle = document.getElementById('valueModalTitle');
+            const valueInput = document.getElementById('valueInput');
+            const saveValueBtn = document.getElementById('saveValueBtn');
+            const cancelValueBtn = document.getElementById('cancelValueBtn');
+            
+            let components = [];
+            let connections = [];
+            let activeConnectionPoint = null;
+            let nextComponentId = 1;
+            let currentEditComponent = null;
+            
+            // Dragging state variables
+            let draggedElement = null;
+            let dragOffsetX = 0;
+            let dragOffsetY = 0;
+            
+
+            
+            // Example circuit buttons
+            exampleCircuitBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const circuitType = this.dataset.circuit;
+                    loadExampleCircuit(circuitType);
+                });
+            });
+            
+            // Load example circuit
+            function loadExampleCircuit(circuitType) {
+                // Clear current circuit
+                clearCanvas();
+                
+                switch(circuitType) {
+                    case 'parallel-6-3-series-100':
+                        createParallel6_3Series100Circuit();
+                        break;
+                    case 'series':
+                        createSeriesCircuit();
+                        break;
+                    case 'parallel':
+                        createParallelCircuit();
+                        break;
+                    case 'mixed-complex':
+                        createMixedComplexCircuit();
+                        break;
+                }
+            }
+            
+            // Create a circuit with 6Ω and 3Ω resistors in parallel, connected in series with a 100Ω resistor
+            function createParallel6_3Series100Circuit() {
+                // Create resistors
+                const r1 = createResistor(nextComponentId++, 6);
+                const r2 = createResistor(nextComponentId++, 3);
+                const r3 = createResistor(nextComponentId++, 100);
+                
+                // Position resistors
+                positionComponent(r1, 100, 120, false);
+                positionComponent(r2, 100, 180, false);
+                positionComponent(r3, 300, 150, false);
+                
+                // Add to canvas
+                canvas.appendChild(r1);
+                canvas.appendChild(r2);
+                canvas.appendChild(r3);
+                
+                // Add to components array
+                components.push({
+                    id: parseInt(r1.dataset.id),
+                    type: 'resistor',
+                    element: r1,
+                    value: 6,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r2.dataset.id),
+                    type: 'resistor',
+                    element: r2,
+                    value: 3,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r3.dataset.id),
+                    type: 'resistor',
+                    element: r3,
+                    value: 100,
+                    connections: []
+                });
+                
+                // Initialize draggable
+                initDraggable(r1);
+                initDraggable(r2);
+                initDraggable(r3);
+                
+                // Create connections for parallel resistors
+                // Left side connections (all connected to a common point)
+                createConnection(parseInt(r1.dataset.id), 'left', parseInt(r2.dataset.id), 'left');
+                
+                // Right side connections (all connected to a common point)
+                createConnection(parseInt(r1.dataset.id), 'right', parseInt(r2.dataset.id), 'right');
+                
+                // Connect the parallel group to the series resistor
+                createConnection(parseInt(r1.dataset.id), 'right', parseInt(r3.dataset.id), 'left');
+            }
+            
+            // Create a simple series circuit
+            function createSeriesCircuit() {
+                // Create resistors
+                const r1 = createResistor(nextComponentId++, 10);
+                const r2 = createResistor(nextComponentId++, 20);
+                const r3 = createResistor(nextComponentId++, 30);
+                
+                // Position resistors
+                positionComponent(r1, 100, 150, false);
+                positionComponent(r2, 250, 150, false);
+                positionComponent(r3, 400, 150, false);
+                
+                // Add to canvas
+                canvas.appendChild(r1);
+                canvas.appendChild(r2);
+                canvas.appendChild(r3);
+                
+                // Add to components array
+                components.push({
+                    id: parseInt(r1.dataset.id),
+                    type: 'resistor',
+                    element: r1,
+                    value: 10,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r2.dataset.id),
+                    type: 'resistor',
+                    element: r2,
+                    value: 20,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r3.dataset.id),
+                    type: 'resistor',
+                    element: r3,
+                    value: 30,
+                    connections: []
+                });
+                
+                // Initialize draggable
+                initDraggable(r1);
+                initDraggable(r2);
+                initDraggable(r3);
+                
+                // Create series connections
+                createConnection(parseInt(r1.dataset.id), 'right', parseInt(r2.dataset.id), 'left');
+                createConnection(parseInt(r2.dataset.id), 'right', parseInt(r3.dataset.id), 'left');
+            }
+            
+            // Create a parallel circuit
+            function createParallelCircuit() {
+                // Create resistors
+                const r1 = createResistor(nextComponentId++, 100);
+                const r2 = createResistor(nextComponentId++, 100);
+                const r3 = createResistor(nextComponentId++, 100);
+                
+                // Position resistors
+                positionComponent(r1, 200, 100, false);
+                positionComponent(r2, 200, 150, false);
+                positionComponent(r3, 200, 200, false);
+                
+                // Add to canvas
+                canvas.appendChild(r1);
+                canvas.appendChild(r2);
+                canvas.appendChild(r3);
+                
+                // Add to components array
+                components.push({
+                    id: parseInt(r1.dataset.id),
+                    type: 'resistor',
+                    element: r1,
+                    value: 100,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r2.dataset.id),
+                    type: 'resistor',
+                    element: r2,
+                    value: 100,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r3.dataset.id),
+                    type: 'resistor',
+                    element: r3,
+                    value: 100,
+                    connections: []
+                });
+                
+                // Initialize draggable
+                initDraggable(r1);
+                initDraggable(r2);
+                initDraggable(r3);
+                
+                // Create parallel connections
+                createConnection(parseInt(r1.dataset.id), 'left', parseInt(r2.dataset.id), 'left');
+                createConnection(parseInt(r2.dataset.id), 'left', parseInt(r3.dataset.id), 'left');
+                createConnection(parseInt(r1.dataset.id), 'right', parseInt(r2.dataset.id), 'right');
+                createConnection(parseInt(r2.dataset.id), 'right', parseInt(r3.dataset.id), 'right');
+            }
+            
+            // Create a mixed complex circuit
+            function createMixedComplexCircuit() {
+                // Create resistors
+                const r1 = createResistor(nextComponentId++, 10);  // Top branch, first resistor
+                const r2 = createResistor(nextComponentId++, 20);  // Top branch, second resistor
+                const r3 = createResistor(nextComponentId++, 30);  // Middle branch
+                const r4 = createResistor(nextComponentId++, 40);  // Bottom branch, first resistor
+                const r5 = createResistor(nextComponentId++, 50);  // Bottom branch, second resistor
+                
+                // Position resistors
+                positionComponent(r1, 150, 80, false);
+                positionComponent(r2, 300, 80, false);
+                positionComponent(r3, 225, 150, false);
+                positionComponent(r4, 150, 220, false);
+                positionComponent(r5, 300, 220, false);
+                
+                // Add to canvas
+                canvas.appendChild(r1);
+                canvas.appendChild(r2);
+                canvas.appendChild(r3);
+                canvas.appendChild(r4);
+                canvas.appendChild(r5);
+                
+                // Add to components array
+                components.push({
+                    id: parseInt(r1.dataset.id),
+                    type: 'resistor',
+                    element: r1,
+                    value: 10,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r2.dataset.id),
+                    type: 'resistor',
+                    element: r2,
+                    value: 20,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r3.dataset.id),
+                    type: 'resistor',
+                    element: r3,
+                    value: 30,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r4.dataset.id),
+                    type: 'resistor',
+                    element: r4,
+                    value: 40,
+                    connections: []
+                });
+                
+                components.push({
+                    id: parseInt(r5.dataset.id),
+                    type: 'resistor',
+                    element: r5,
+                    value: 50,
+                    connections: []
+                });
+                
+                // Initialize draggable
+                initDraggable(r1);
+                initDraggable(r2);
+                initDraggable(r3);
+                initDraggable(r4);
+                initDraggable(r5);
+                
+                // Create connections
+                // Top branch series connection
+                createConnection(parseInt(r1.dataset.id), 'right', parseInt(r2.dataset.id), 'left');
+                
+                // Bottom branch series connection
+                createConnection(parseInt(r4.dataset.id), 'right', parseInt(r5.dataset.id), 'left');
+                
+                // Connect branches in parallel
+                createConnection(parseInt(r1.dataset.id), 'left', parseInt(r3.dataset.id), 'left');
+                createConnection(parseInt(r1.dataset.id), 'left', parseInt(r4.dataset.id), 'left');
+                
+                createConnection(parseInt(r2.dataset.id), 'right', parseInt(r3.dataset.id), 'right');
+                createConnection(parseInt(r2.dataset.id), 'right', parseInt(r5.dataset.id), 'right');
+            }
+            
+            // Add resistor to canvas
+            addResistorBtn.addEventListener('click', function() {
+                showValueInputModal('resistor');
+            });
+            
+            // Add battery to canvas
+            addBatteryBtn.addEventListener('click', function() {
+                showValueInputModal('battery');
+            });
+            
+            // Show value input modal
+            function showValueInputModal(type) {
+                currentEditComponent = { type: type, isNew: true };
+                
+                if (type === 'resistor') {
+                    valueModalTitle.textContent = 'Direnç Değerini Ayarla';
+                    valueInput.value = '100';
+                    valueInput.min = '0.1';
+                    valueInput.step = '0.1';
+                    valueInput.placeholder = 'Direnç değeri (Ω)';
+                } else if (type === 'battery') {
+                    valueModalTitle.textContent = 'Üreteç Değerini Ayarla';
+                    valueInput.value = '12';
+                    valueInput.min = '0.1';
+                    valueInput.step = '0.1';
+                    valueInput.placeholder = 'Gerilim değeri (V)';
+                }
+                
+                valueModal.classList.add('active');
+                valueInput.focus();
+            }
+            
+            // Show edit value modal for existing component
+            function showEditValueModal(component) {
+                currentEditComponent = component;
+                
+                if (component.type === 'resistor') {
+                    valueModalTitle.textContent = 'Direnç Değerini Düzenle';
+                    valueInput.value = component.value;
+                    valueInput.min = '0.1';
+                    valueInput.step = '0.1';
+                    valueInput.placeholder = 'Direnç değeri (Ω)';
+                } else if (component.type === 'battery') {
+                    valueModalTitle.textContent = 'Üreteç Değerini Düzenle';
+                    valueInput.value = component.value;
+                    valueInput.min = '0.1';
+                    valueInput.step = '0.1';
+                    valueInput.placeholder = 'Gerilim değeri (V)';
+                }
+                
+                valueModal.classList.add('active');
+                valueInput.focus();
+            }
+            
+            // Hide value input modal
+            function hideValueModal() {
+                valueModal.classList.remove('active');
+                currentEditComponent = null;
+            }
+            
+            // Cancel value button
+            cancelValueBtn.addEventListener('click', hideValueModal);
+            
+            // Save value button click
+            saveValueBtn.addEventListener('click', function() {
+                const value = parseFloat(valueInput.value);
+                
+                if (isNaN(value) || value <= 0) {
+                    alert('Lütfen geçerli bir değer girin.');
+                    return;
+                }
+                
+                if (currentEditComponent.isNew) {
+                    // Create new component
+                    if (currentEditComponent.type === 'resistor') {
+                        const resistor = createResistor(nextComponentId++, value);
+                        
+                        // SIMPLE positioning based on existing components count
+                        let preferredX = 50;
+                        let preferredY = 50;
+                        
+                        if (components.length > 0) {
+                            // Place components in a horizontal row, wrapping to next row if needed
+                            const componentsPerRow = Math.floor((canvas.scrollWidth - 100) / 160); // 160px per component (120 width + 40 margin)
+                            const row = Math.floor(components.length / componentsPerRow);
+                            const col = components.length % componentsPerRow;
+                            
+                            preferredX = 50 + (col * 160); // 160px spacing (120 width + 40 margin)
+                            preferredY = 50 + (row * 80);  // 80px row spacing (40 height + 40 margin)
+                        }
+                        
+                        positionComponent(resistor, preferredX, preferredY);
+                        canvas.appendChild(resistor);
+                        components.push({
+                            id: parseInt(resistor.dataset.id),
+                            type: 'resistor',
+                            element: resistor,
+                            value: value,
+                            connections: []
+                        });
+                        initDraggable(resistor);
+                        
+                        // Add highlight animation for new component
+                        resistor.style.animation = 'highlightNew 1s ease-out';
+                        resistor.style.boxShadow = '0 0 20px var(--neon-cyan)';
+                        
+                        setTimeout(() => {
+                            resistor.style.animation = '';
+                            resistor.style.boxShadow = '';
+                        }, 1000);
+                        
+                    } else if (currentEditComponent.type === 'battery') {
+                        const battery = createBattery(nextComponentId++, value);
+                        
+                        // SIMPLE positioning based on existing components count
+                        let preferredX = 50;
+                        let preferredY = 50;
+                        
+                        if (components.length > 0) {
+                            // Place components in a horizontal row, wrapping to next row if needed
+                            const componentsPerRow = Math.floor((canvas.scrollWidth - 100) / 160); // 160px per component (120 width + 40 margin)
+                            const row = Math.floor(components.length / componentsPerRow);
+                            const col = components.length % componentsPerRow;
+                            
+                            preferredX = 50 + (col * 160); // 160px spacing (120 width + 40 margin)
+                            preferredY = 50 + (row * 80);  // 80px row spacing (40 height + 40 margin)
+                        }
+                        
+                        positionComponent(battery, preferredX, preferredY);
+                        canvas.appendChild(battery);
+                        components.push({
+                            id: parseInt(battery.dataset.id),
+                            type: 'battery',
+                            element: battery,
+                            value: value,
+                            connections: []
+                        });
+                        initDraggable(battery);
+                        
+                        // Add highlight animation for new component
+                        battery.style.animation = 'highlightNew 1s ease-out';
+                        battery.style.boxShadow = '0 0 20px var(--neon-cyan)';
+                        
+                        setTimeout(() => {
+                            battery.style.animation = '';
+                            battery.style.boxShadow = '';
+                        }, 1000);
+                    }
+                } else {
+                    // Update existing component
+                    currentEditComponent.value = value;
+                    const valueDisplay = currentEditComponent.element.querySelector('.resistor-value, .battery-value');
+                    if (valueDisplay) {
+                        if (currentEditComponent.type === 'resistor') {
+                            valueDisplay.textContent = value + ' Ω';
+                        } else {
+                            valueDisplay.textContent = value + ' V';
+                        }
+                    }
+                }
+                
+                hideValueModal();
+            });
+            
+            // Create resistor element
+            function createResistor(id, value) {
+                const resistor = document.createElement('div');
+                resistor.className = 'component resistor';
+                resistor.dataset.id = id;
+                resistor.innerHTML = `
+                    <div class="resistor-body">
+                        <div class="connection-point left-point" data-point="left"></div>
+                        <div class="connection-point right-point" data-point="right"></div>
+                    </div>
+                    <div class="resistor-value">${value} Ω</div>
+                    <div class="edit-button" title="Değeri düzenle">✏️</div>
+                    <div class="delete-button" title="Direnci sil">×</div>
+                `;
+                
+                // Add connection point event listeners with tooltips
+                const points = resistor.querySelectorAll('.connection-point');
+                points.forEach(point => {
+                    point.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        handleConnectionClick(id, point.dataset.point, point);
+                    });
+                    
+                    // Add tooltip functionality for connection points
+                    point.addEventListener('mouseenter', function(e) {
+                        showTooltip(e, 'Bağlantı noktası - tıklayarak bağlantı yapın');
+                    });
+                    
+                    point.addEventListener('mouseleave', function() {
+                        hideTooltip();
+                    });
+                });
+                
+                // Add edit button event listener
+                const editBtn = resistor.querySelector('.edit-button');
+                editBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const component = components.find(c => c.id === id);
+                    showEditValueModal(component);
+                });
+                
+                // Add delete button event listener
+                const deleteBtn = resistor.querySelector('.delete-button');
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    deleteComponent(id);
+                });
+                
+                return resistor;
+            }
+            
+            // Create battery element
+            function createBattery(id, value) {
+                const battery = document.createElement('div');
+                battery.className = 'component battery';
+                battery.dataset.id = id;
+                battery.innerHTML = `
+                    <div class="battery-body">
+                        <div class="battery-symbol">
+                            <div class="battery-line"></div>
+                            <div class="battery-line small"></div>
+                            <div class="battery-line"></div>
+                            <div class="battery-line small"></div>
+                        </div>
+                        <div class="connection-point left-point" data-point="left"></div>
+                        <div class="connection-point right-point" data-point="right"></div>
+                    </div>
+                    <div class="battery-value">${value} V</div>
+                    <div class="edit-button" title="Değeri düzenle">✏️</div>
+                    <div class="delete-button" title="Üreteci sil">×</div>
+                `;
+                
+                // Add connection point event listeners with tooltips
+                const points = battery.querySelectorAll('.connection-point');
+                points.forEach(point => {
+                    point.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        handleConnectionClick(id, point.dataset.point, point);
+                    });
+                    
+                    // Add tooltip functionality for connection points
+                    point.addEventListener('mouseenter', function(e) {
+                        showTooltip(e, 'Bağlantı noktası - tıklayarak bağlantı yapın');
+                    });
+                    
+                    point.addEventListener('mouseleave', function() {
+                        hideTooltip();
+                    });
+                });
+                
+                // Add edit button event listener
+                const editBtn = battery.querySelector('.edit-button');
+                editBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const component = components.find(c => c.id === id);
+                    showEditValueModal(component);
+                });
+                
+                // Add delete button event listener
+                const deleteBtn = battery.querySelector('.delete-button');
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    deleteComponent(id);
+                });
+                
+                return battery;
+            }
+            
+            // Position component
+            function positionComponent(element, x, y, useCollisionDetection = true) {
+                if (useCollisionDetection) {
+                    const freePosition = findFreePosition(element, x, y);
+                    element.style.left = `${freePosition.x}px`;
+                    element.style.top = `${freePosition.y}px`;
+                } else {
+                    // For example circuits, use exact positions
+                    element.style.left = `${x}px`;
+                    element.style.top = `${y}px`;
+                }
+            }
+
+            // Check if two elements are colliding
+            function isColliding(rect1, rect2, margin = 20) {
+                return !(rect1.right + margin < rect2.left || 
+                        rect2.right + margin < rect1.left || 
+                        rect1.bottom + margin < rect2.top || 
+                        rect2.bottom + margin < rect1.top);
+            }
+
+            // Get element bounds relative to canvas
+            function getElementBounds(element) {
+                return {
+                    left: parseInt(element.style.left) || 0,
+                    top: parseInt(element.style.top) || 0,
+                    right: (parseInt(element.style.left) || 0) + element.offsetWidth,
+                    bottom: (parseInt(element.style.top) || 0) + element.offsetHeight,
+                    width: element.offsetWidth,
+                    height: element.offsetHeight
+                };
+            }
+
+            // Find a free position for new component
+            function findFreePosition(element, preferredX = 50, preferredY = 50) {
+                const componentWidth = 120;
+                const componentHeight = 40;
+                const margin = 25; // Increased margin between components
+                const canvasMargin = 50; // Minimum distance from canvas edges
+                
+                // Try preferred position first
+                const testBounds = {
+                    left: preferredX,
+                    top: preferredY,
+                    right: preferredX + componentWidth,
+                    bottom: preferredY + componentHeight,
+                    width: componentWidth,
+                    height: componentHeight
+                };
+                
+                // Check canvas boundaries first
+                if (preferredX < canvasMargin || preferredY < canvasMargin || 
+                    preferredX + componentWidth > canvas.scrollWidth - canvasMargin ||
+                    preferredY + componentHeight > canvas.scrollHeight - canvasMargin) {
+                    // Position is too close to edges, find better spot
+                } else {
+                    let hasCollision = false;
+                    for (const component of components) {
+                        if (component.element === element) continue;
+                        const existingBounds = getElementBounds(component.element);
+                        if (isColliding(testBounds, existingBounds, margin)) {
+                            hasCollision = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!hasCollision) {
+                        return { x: preferredX, y: preferredY };
+                    }
+                }
+                
+                // Smart positioning: try to place to the right or below existing components
+                // First, gather all existing component positions
+                const existingPositions = [];
+                for (const component of components) {
+                    if (component.element === element) continue;
+                    const bounds = getElementBounds(component.element);
+                    existingPositions.push(bounds);
+                }
+                
+                if (existingPositions.length > 0) {
+                    // Strategy 1: Try positions to the right of existing components
+                    for (const existing of existingPositions) {
+                        const rightX = existing.right + margin;
+                        const rightY = existing.top;
+                        
+                        if (rightX + componentWidth <= canvas.scrollWidth - canvasMargin && 
+                            rightY >= canvasMargin && 
+                            rightY + componentHeight <= canvas.scrollHeight - canvasMargin) {
+                            const testBounds = {
+                                left: rightX,
+                                top: rightY,
+                                right: rightX + componentWidth,
+                                bottom: rightY + componentHeight,
+                                width: componentWidth,
+                                height: componentHeight
+                            };
+                            
+                            let hasCollision = false;
+                            for (const otherComponent of components) {
+                                if (otherComponent.element === element) continue;
+                                const otherBounds = getElementBounds(otherComponent.element);
+                                if (isColliding(testBounds, otherBounds, margin)) {
+                                    hasCollision = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (!hasCollision) {
+                                return { x: rightX, y: rightY };
+                            }
+                        }
+                    }
+                    
+                    // Strategy 2: Try positions below existing components
+                    for (const existing of existingPositions) {
+                        const belowX = existing.left;
+                        const belowY = existing.bottom + margin;
+                        
+                        if (belowX >= canvasMargin && 
+                            belowX + componentWidth <= canvas.scrollWidth - canvasMargin && 
+                            belowY + componentHeight <= canvas.scrollHeight - canvasMargin) {
+                            const testBounds = {
+                                left: belowX,
+                                top: belowY,
+                                right: belowX + componentWidth,
+                                bottom: belowY + componentHeight,
+                                width: componentWidth,
+                                height: componentHeight
+                            };
+                            
+                            let hasCollision = false;
+                            for (const otherComponent of components) {
+                                if (otherComponent.element === element) continue;
+                                const otherBounds = getElementBounds(otherComponent.element);
+                                if (isColliding(testBounds, otherBounds, margin)) {
+                                    hasCollision = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (!hasCollision) {
+                                return { x: belowX, y: belowY };
+                            }
+                        }
+                    }
+                    
+                    // Strategy 3: Find the rightmost position and place to its right
+                    let rightmostPosition = existingPositions[0];
+                    for (const pos of existingPositions) {
+                        if (pos.right > rightmostPosition.right) {
+                            rightmostPosition = pos;
+                        }
+                    }
+                    
+                    const farRightX = rightmostPosition.right + margin;
+                    const farRightY = rightmostPosition.top;
+                    
+                    if (farRightX + componentWidth <= canvas.scrollWidth - canvasMargin && 
+                        farRightY >= canvasMargin && 
+                        farRightY + componentHeight <= canvas.scrollHeight - canvasMargin) {
+                        const testBounds = {
+                            left: farRightX,
+                            top: farRightY,
+                            right: farRightX + componentWidth,
+                            bottom: farRightY + componentHeight,
+                            width: componentWidth,
+                            height: componentHeight
+                        };
+                        
+                        let hasCollision = false;
+                        for (const otherComponent of components) {
+                            if (otherComponent.element === element) continue;
+                            const otherBounds = getElementBounds(otherComponent.element);
+                            if (isColliding(testBounds, otherBounds, margin)) {
+                                hasCollision = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!hasCollision) {
+                            return { x: farRightX, y: farRightY };
+                        }
+                    }
+                    
+                    // Strategy 4: Find the bottommost position and place below it
+                    let bottommostPosition = existingPositions[0];
+                    for (const pos of existingPositions) {
+                        if (pos.bottom > bottommostPosition.bottom) {
+                            bottommostPosition = pos;
+                        }
+                    }
+                    
+                    const farBelowX = bottommostPosition.left;
+                    const farBelowY = bottommostPosition.bottom + margin;
+                    
+                    if (farBelowX >= canvasMargin && 
+                        farBelowX + componentWidth <= canvas.scrollWidth - canvasMargin && 
+                        farBelowY + componentHeight <= canvas.scrollHeight - canvasMargin) {
+                        const testBounds = {
+                            left: farBelowX,
+                            top: farBelowY,
+                            right: farBelowX + componentWidth,
+                            bottom: farBelowY + componentHeight,
+                            width: componentWidth,
+                            height: componentHeight
+                        };
+                        
+                        let hasCollision = false;
+                        for (const otherComponent of components) {
+                            if (otherComponent.element === element) continue;
+                            const otherBounds = getElementBounds(otherComponent.element);
+                            if (isColliding(testBounds, otherBounds, margin)) {
+                                hasCollision = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!hasCollision) {
+                            return { x: farBelowX, y: farBelowY };
+                        }
+                    }
+                }
+                
+                // Fallback: Spiral search for free position (original method)
+                const maxRadius = 300;
+                const step = 30;
+                
+                for (let radius = step; radius <= maxRadius; radius += step) {
+                    const positions = getPositionsOnCircle(canvasMargin + 100, canvasMargin + 100, radius, componentWidth, componentHeight);
+                    
+                    for (const pos of positions) {
+                        // Ensure position is within canvas bounds
+                        if (pos.x < canvasMargin || pos.y < canvasMargin || 
+                            pos.x + componentWidth > canvas.scrollWidth - canvasMargin ||
+                            pos.y + componentHeight > canvas.scrollHeight - canvasMargin) {
+                            continue;
+                        }
+                        
+                        const testBounds = {
+                            left: pos.x,
+                            top: pos.y,
+                            right: pos.x + componentWidth,
+                            bottom: pos.y + componentHeight,
+                            width: componentWidth,
+                            height: componentHeight
+                        };
+                        
+                        let hasCollision = false;
+                        for (const component of components) {
+                            if (component.element === element) continue;
+                            const existingBounds = getElementBounds(component.element);
+                            if (isColliding(testBounds, existingBounds, margin)) {
+                                hasCollision = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!hasCollision) {
+                            return pos;
+                        }
+                    }
+                }
+                
+                // If no free position found, place at safe fallback position
+                return { x: canvasMargin, y: canvasMargin };
+            }
+
+            // Get positions arranged in a circle
+            function getPositionsOnCircle(centerX, centerY, radius, width, height) {
+                const positions = [];
+                const numPositions = Math.max(8, Math.floor(radius / 20));
+                
+                for (let i = 0; i < numPositions; i++) {
+                    const angle = (i / numPositions) * 2 * Math.PI;
+                    const x = centerX + Math.cos(angle) * radius - width / 2;
+                    const y = centerY + Math.sin(angle) * radius - height / 2;
+                    positions.push({ x, y });
+                }
+                
+                return positions;
+            }
+            
+            // Initialize draggable
+            function initDraggable(element) {
+                element.addEventListener('mousedown', startDrag);
+                element.addEventListener('touchstart', startDrag);
+            }
+            
+            function startDrag(e) {
+                if (e.target.classList.contains('connection-point') || 
+                    e.target.classList.contains('edit-button') || 
+                    e.target.classList.contains('delete-button')) {
+                    return;
+                }
+                
+                console.log('🎯 DRAG STARTED!'); // Debug log
+                
+                e.preventDefault();
+                draggedElement = this;
+                
+                // Add beautiful drag glow effect with !important to override existing styles
+                draggedElement.style.setProperty('box-shadow', '0 0 25px var(--neon-cyan), 0 0 50px rgba(0, 245, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.4)', 'important');
+                draggedElement.style.setProperty('transform', 'scale(1.05)', 'important');
+                draggedElement.style.setProperty('z-index', '1000', 'important');
+                draggedElement.style.setProperty('opacity', '0.9', 'important');
+                
+                // Add a drag class for additional styling
+                draggedElement.classList.add('dragging');
+                
+                console.log('✨ DRAG STYLES APPLIED!', draggedElement.style.transform); // Debug log
+                
+                const rect = draggedElement.getBoundingClientRect();
+                const canvasRect = canvas.getBoundingClientRect();
+                
+                const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+                
+                // Calculate offset relative to element - simple version
+                dragOffsetX = clientX - rect.left;
+                dragOffsetY = clientY - rect.top;
+                
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('touchmove', drag);
+                document.addEventListener('mouseup', stopDrag);
+                document.addEventListener('touchend', stopDrag);
+            }
+            
+            function drag(e) {
+                if (!draggedElement) return;
+                
+                e.preventDefault();
+                
+                const canvasRect = canvas.getBoundingClientRect();
+                const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+                
+                // Calculate position relative to canvas, accounting for scroll
+                let x = clientX - canvasRect.left - dragOffsetX + canvas.scrollLeft;
+                let y = clientY - canvasRect.top - dragOffsetY + canvas.scrollTop;
+                
+                // Boundary constraints
+                const maxX = canvas.scrollWidth - draggedElement.offsetWidth;
+                const maxY = canvas.scrollHeight - draggedElement.offsetHeight;
+                
+                x = Math.max(0, Math.min(x, maxX));
+                y = Math.max(0, Math.min(y, maxY));
+                
+                // Check for collisions with other components
+                const testBounds = {
+                    left: x,
+                    top: y,
+                    right: x + draggedElement.offsetWidth,
+                    bottom: y + draggedElement.offsetHeight,
+                    width: draggedElement.offsetWidth,
+                    height: draggedElement.offsetHeight
+                };
+                
+                let hasCollision = false;
+                for (const component of components) {
+                    if (component.element === draggedElement) continue;
+                    
+                    const existingBounds = getElementBounds(component.element);
+                    if (isColliding(testBounds, existingBounds, 15)) {
+                        hasCollision = true;
+                        break;
+                    }
+                }
+                
+                // Only update position if no collision
+                if (!hasCollision) {
+                    draggedElement.style.left = x + 'px';
+                    draggedElement.style.top = y + 'px';
+                    // Restore drag glow (in case it was overridden by collision)
+                    draggedElement.style.setProperty('box-shadow', '0 0 25px var(--neon-cyan), 0 0 50px rgba(0, 245, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.4)', 'important');
+                } else {
+                    // Enhanced visual feedback for collision
+                    draggedElement.style.setProperty('box-shadow', '0 0 25px var(--danger-red), 0 0 50px rgba(231, 76, 60, 0.7), 0 4px 15px rgba(0, 0, 0, 0.4)', 'important');
+                    
+                    // Slight shake effect for collision feedback
+                    draggedElement.style.setProperty('animation', 'shake 0.3s ease-in-out', 'important');
+                    
+                    setTimeout(() => {
+                        if (draggedElement) {
+                            draggedElement.style.setProperty('box-shadow', '0 0 25px var(--neon-cyan), 0 0 50px rgba(0, 245, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.4)', 'important');
+                            draggedElement.style.removeProperty('animation');
+                        }
+                    }, 300);
+                }
+                
+                updateConnections();
+            }
+            
+            function stopDrag() {
+                console.log('🛑 DRAG STOPPED!'); // Debug log
+                
+                if (draggedElement) {
+                    // Remove drag effects and restore normal state
+                    draggedElement.style.removeProperty('box-shadow');
+                    draggedElement.style.removeProperty('transform');
+                    draggedElement.style.removeProperty('z-index');
+                    draggedElement.style.removeProperty('opacity');
+                    draggedElement.classList.remove('dragging');
+                    
+                    console.log('🧹 DRAG STYLES REMOVED!'); // Debug log
+                }
+                
+                draggedElement = null;
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('touchmove', drag);
+                document.removeEventListener('mouseup', stopDrag);
+                document.removeEventListener('touchend', stopDrag);
+                
+                // CRITICAL: Update connections after dragging is complete
+                updateConnections();
+            }
+            
+            // Delete component
+            function deleteComponent(componentId) {
+                // Find the component
+                const componentIndex = components.findIndex(c => c.id === componentId);
+                if (componentIndex === -1) return;
+                
+                const component = components[componentIndex];
+                
+                // Remove the component element from the DOM
+                if (component.element && component.element.parentNode) {
+                    component.element.parentNode.removeChild(component.element);
+                }
+                
+                // Find all connections involving this component
+                const connectionsToRemove = connections.filter(conn => 
+                    conn.from.id === componentId || conn.to.id === componentId
+                );
+                
+                // Remove the connection elements from the DOM
+                connectionsToRemove.forEach(conn => {
+                    if (conn.element && conn.element.parentNode) {
+                        conn.element.parentNode.removeChild(conn.element);
+                    }
+                });
+                
+                // Update the connections array
+                connections = connections.filter(conn => 
+                    conn.from.id !== componentId && conn.to.id !== componentId
+                );
+                
+                // Update connection references in other components
+                components.forEach(c => {
+                    c.connections = c.connections.filter(conn => conn.componentId !== componentId);
+                });
+                
+                // Remove the component from the components array
+                components.splice(componentIndex, 1);
+                
+                // Reset active connection point if it was on this component
+                if (activeConnectionPoint && activeConnectionPoint.id === componentId) {
+                    activeConnectionPoint = null;
+                }
+            }
+            
+            // Clear canvas
+            clearCanvasBtn.addEventListener('click', function() {
+                clearCanvas();
+            });
+            
+            function clearCanvas() {
+                console.log('🧨 CLEAR CANVAS: Starting complete cleanup...');
+                
+                // Clear all wire elements first
+                const allWires = canvas.querySelectorAll('.wire');
+                console.log(`🧨 Found ${allWires.length} wire elements to remove`);
+                allWires.forEach(wire => wire.remove());
+                
+                // Clear canvas - simple version
+                while (canvas.firstChild) {
+                    canvas.removeChild(canvas.firstChild);
+                }
+                
+                // Reset all data structures
+                components = [];
+                connections = [];
+                activeConnectionPoint = null;
+                nextComponentId = 1;
+                calculationResult.style.display = 'none';
+                calculationSteps.style.display = 'none';
+                
+                console.log('✅ CLEAR CANVAS: Complete cleanup finished');
+            }
+            
+            // Create resistor element
+
+
+
+
+            // Create connection between two components
+
+
+            // Show tooltip
+            function showTooltip(e, text) {
+                // Simplified tooltip - will be enhanced later
+                console.log('Tooltip:', text);
+            }
+
+            // Hide tooltip
+            function hideTooltip() {
+                // Simplified tooltip - will be enhanced later
+            }
+
+            // Show edit value modal for components
+            function showEditValueModal(component) {
+                // Simplified modal - will be enhanced later
+                const newValue = prompt(`${component.type === 'resistor' ? 'Direnç' : 'Üreteç'} değerini girin:`, component.value);
+                if (newValue && !isNaN(newValue)) {
+                    component.value = parseFloat(newValue);
+                    const valueElement = component.element.querySelector('.resistor-value');
+                    if (valueElement) {
+                        valueElement.textContent = `${newValue} Ω`;
+                    }
+                }
+            }
+
+            // Delete component
+
+
+            // Calculate resistance
+            calculateResistanceBtn.addEventListener('click', function() {
+                const result = calculateCircuit();
+                
+                // Display result
+                calculatedValue.textContent = result.totalResistance + ' Ω';
+                calculationResult.style.display = 'block';
+                
+                // Display steps
+                if (result.steps && result.steps.length > 0) {
+                    stepsContent.innerHTML = '';
+                    result.steps.forEach(step => {
+                        const stepDiv = document.createElement('div');
+                        stepDiv.className = 'step';
+                        stepDiv.textContent = step;
+                        stepsContent.appendChild(stepDiv);
+                    });
+                    calculationSteps.style.display = 'block';
+                }
+            });
+            
+            // Handle connection click
+            function handleConnectionClick(componentId, pointType, element) {
+                if (activeConnectionPoint === null) {
+                    // First click - activate this point
+                    activeConnectionPoint = {
+                        id: componentId,
+                        point: pointType,
+                        element: element
+                    };
+                    element.classList.add('active');
+                } else {
+                    // Second click - create connection
+                    if (activeConnectionPoint.id === componentId && activeConnectionPoint.point === pointType) {
+                        // Same point clicked - deactivate
+                        activeConnectionPoint.element.classList.remove('active');
+                        activeConnectionPoint = null;
+                    } else {
+                        // Different point - create connection
+                        createConnection(
+                            activeConnectionPoint.id,
+                            activeConnectionPoint.point,
+                            componentId,
+                            pointType
+                        );
+                        
+                        // Deactivate
+                        activeConnectionPoint.element.classList.remove('active');
+                        activeConnectionPoint = null;
+                    }
+                }
+            }
+            
+            // Create connection between two points
+            function createConnection(fromId, fromPoint, toId, toPoint) {
+                // Check if connection already exists
+                const connectionExists = connections.some(conn => 
+                    (conn.from.id === fromId && conn.from.point === fromPoint && 
+                     conn.to.id === toId && conn.to.point === toPoint) ||
+                    (conn.from.id === toId && conn.from.point === toPoint && 
+                     conn.to.id === fromId && conn.to.point === fromPoint)
+                );
+                
+                if (connectionExists) return;
+                
+                // Create wire element
+                const wire = document.createElement('div');
+                wire.className = 'wire';
+                // Add data attributes to track which components this wire connects
+                wire.setAttribute('data-from-id', fromId);
+                wire.setAttribute('data-to-id', toId);
+                canvas.appendChild(wire);
+                
+                // Store connection
+                const connection = {
+                    from: { id: fromId, point: fromPoint },
+                    to: { id: toId, point: toPoint },
+                    element: wire
+                };
+                
+                connections.push(connection);
+                
+                // Update component connection references
+                const fromComponent = components.find(c => c.id === fromId);
+                const toComponent = components.find(c => c.id === toId);
+                
+                if (fromComponent && toComponent) {
+                    fromComponent.connections.push({ componentId: toId, fromPoint, toPoint });
+                    toComponent.connections.push({ componentId: fromId, fromPoint: toPoint, toPoint: fromPoint });
+                }
+                
+                updateConnections();
+            }
+            
+            // Update all wire connections - simplified version
+            function updateConnections() {
+                // First pass: Clean up orphaned connections
+                connections = connections.filter(connection => {
+                    const fromComponent = components.find(c => c.id === connection.from.id);
+                    const toComponent = components.find(c => c.id === connection.to.id);
+                    
+                    // If either component is missing, remove this connection
+                    if (!fromComponent || !toComponent) {
+                        console.log(`🧹 Cleaning orphaned connection: ${connection.from.id} -> ${connection.to.id}`);
+                        if (connection.element && connection.element.parentNode) {
+                            connection.element.remove();
+                        }
+                        return false; // Remove from connections array
+                    }
+                    
+                    return true; // Keep this connection
+                });
+                
+                // Second pass: Update remaining valid connections
+                connections.forEach(connection => {
+                    const fromComponent = components.find(c => c.id === connection.from.id);
+                    const toComponent = components.find(c => c.id === connection.to.id);
+                    
+                    // This should not happen after first pass, but double check
+                    if (!fromComponent || !toComponent) return;
+                    
+                    const fromElement = fromComponent.element;
+                    const toElement = toComponent.element;
+                    
+                    const fromPoint = fromElement.querySelector(`.${connection.from.point}-point`);
+                    const toPoint = toElement.querySelector(`.${connection.to.point}-point`);
+                    
+                    if (!fromPoint || !toPoint) return;
+                    
+                    // Get element positions directly from style properties (not getBoundingClientRect)
+                    // This avoids zoom scale distortion in coordinate calculation
+                    
+                    const fromElementX = parseInt(fromElement.style.left) || 0;
+                    const fromElementY = parseInt(fromElement.style.top) || 0;
+                    const toElementX = parseInt(toElement.style.left) || 0;
+                    const toElementY = parseInt(toElement.style.top) || 0;
+                    
+                    // Calculate connection point positions relative to element centers
+                    let fromX, fromY, toX, toY;
+                    
+                    // From point position
+                    if (connection.from.point === 'left') {
+                        fromX = fromElementX;
+                        fromY = fromElementY + 20; // Center height of component (40px / 2)
+                    } else { // right
+                        fromX = fromElementX + 120; // Component width
+                        fromY = fromElementY + 20;
+                    }
+                    
+                    // To point position
+                    if (connection.to.point === 'left') {
+                        toX = toElementX;
+                        toY = toElementY + 20;
+                    } else { // right
+                        toX = toElementX + 120;
+                        toY = toElementY + 20;
+                    }
+                    
+                    // Calculate wire position and dimensions
+                    const length = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+                    const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+                    
+                    const wire = connection.element;
+                    wire.style.width = `${length}px`;
+                    wire.style.left = `${fromX}px`;
+                    wire.style.top = `${fromY}px`;
+                    wire.style.transformOrigin = '0 50%';
+                    wire.style.transform = `rotate(${angle}deg)`;
+                });
+            }
+            
+            // Calculate circuit values
+            function calculateCircuit() {
+                // Filter out resistors that have no connections
+                const connectedResistors = components.filter(c => 
+                    c.type === 'resistor' && c.connections.length > 0
+                );
+                
+                if (connectedResistors.length === 0) {
+                    return { 
+                        totalResistance: '0', 
+                        steps: ['Devrede bağlantısı olan direnç bulunamadı.'] 
+                    };
+                }
+                
+                if (connectedResistors.length === 1) {
+                    const resistance = connectedResistors[0].value;
+                    return { 
+                        totalResistance: resistance.toFixed(2), 
+                        steps: [`Devrede sadece bir direnç var: R${connectedResistors[0].id} = ${resistance} Ω`] 
+                    };
+                }
+                
+                // Create a circuit graph for analysis
+                const circuitGraph = createCircuitGraph();
+                
+                // Analyze the circuit and calculate equivalent resistance
+                const result = analyzeCircuitGraph(circuitGraph);
+                
+                return result;
+            }
+            
+            // Create a circuit graph for analysis
+            function createCircuitGraph() {
+                // Only include resistors with connections
+                const connectedResistors = components.filter(c => 
+                    c.type === 'resistor' && c.connections.length > 0
+                );
+                
+                // Create nodes (connection points)
+                const nodes = new Map();
+                let nodeId = 1;
+                
+                // First, identify all connection points
+                connections.forEach(conn => {
+                    const fromKey = `${conn.from.id}-${conn.from.point}`;
+                    const toKey = `${conn.to.id}-${conn.to.point}`;
+                    
+                    if (!nodes.has(fromKey)) {
+                        nodes.set(fromKey, nodeId++);
+                    }
+                    
+                    if (!nodes.has(toKey)) {
+                        nodes.set(toKey, nodes.get(fromKey)); // Connected points share the same node
+                    } else {
+                        // If both points already have nodes, merge them
+                        const fromNodeId = nodes.get(fromKey);
+                        const toNodeId = nodes.get(toKey);
+                        
+                        if (fromNodeId !== toNodeId) {
+                            // Merge nodes - update all occurrences of toNodeId to fromNodeId
+                            for (const [key, value] of nodes.entries()) {
+                                if (value === toNodeId) {
+                                    nodes.set(key, fromNodeId);
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                // Create a graph representation
+                const graph = {
+                    resistors: connectedResistors.map(r => ({
+                        id: r.id,
+                        value: r.value,
+                        nodeA: null, // Will be filled below
+                        nodeB: null  // Will be filled below
+                    })),
+                    nodes: new Map() // Map from nodeId to connected resistors
+                };
+                
+                // Assign nodes to resistors
+                graph.resistors.forEach(r => {
+                    const component = components.find(c => c.id === r.id);
+                    if (!component) return;
+                    
+                    const leftKey = `${r.id}-left`;
+                    const rightKey = `${r.id}-right`;
+                    
+                    r.nodeA = nodes.has(leftKey) ? nodes.get(leftKey) : null;
+                    r.nodeB = nodes.has(rightKey) ? nodes.get(rightKey) : null;
+                    
+                    // If a resistor doesn't have both nodes assigned, it's not fully connected
+                    if (r.nodeA === null || r.nodeB === null) {
+                        return;
+                    }
+                    
+                    // Add resistor to node connections
+                    if (!graph.nodes.has(r.nodeA)) {
+                        graph.nodes.set(r.nodeA, []);
+                    }
+                    graph.nodes.get(r.nodeA).push(r);
+                    
+                    if (!graph.nodes.has(r.nodeB)) {
+                        graph.nodes.set(r.nodeB, []);
+                    }
+                    graph.nodes.get(r.nodeB).push(r);
+                });
+                
+                return graph;
+            }
+            
+            // Analyze the circuit graph and calculate equivalent resistance
+            function analyzeCircuitGraph(graph) {
+                const steps = [];
+                
+                // Filter out resistors that are not fully connected
+                const connectedResistors = graph.resistors.filter(r => r.nodeA !== null && r.nodeB !== null);
+                
+                if (connectedResistors.length === 0) {
+                    return {
+                        totalResistance: '0',
+                        steps: ['Devrede tam bağlantılı direnç bulunamadı.']
+                    };
+                }
+                
+                // Create a working copy of the graph
+                let workingGraph = JSON.parse(JSON.stringify({
+                    resistors: connectedResistors,
+                    nodes: Array.from(graph.nodes).reduce((obj, [key, value]) => {
+                        obj[key] = value.map(r => ({...r}));
+                        return obj;
+                    }, {})
+                }));
+                
+                // Keep simplifying the circuit until we have a single equivalent resistor
+                let iteration = 0;
+                const maxIterations = 100; // Safety limit
+                
+                while (workingGraph.resistors.length > 1 && iteration < maxIterations) {
+                    iteration++;
+                    
+                    // First, look for series connections
+                    const seriesResult = findAndReduceSeriesResistors(workingGraph);
+                    
+                    if (seriesResult.reduced) {
+                        steps.push(seriesResult.step);
+                        workingGraph = seriesResult.graph;
+                        continue;
+                    }
+                    
+                    // If no series connections found, look for parallel connections
+                    const parallelResult = findAndReduceParallelResistors(workingGraph);
+                    
+                    if (parallelResult.reduced) {
+                        steps.push(parallelResult.step);
+                        workingGraph = parallelResult.graph;
+                        continue;
+                    }
+                    
+                    // If we can't find any more series or parallel combinations, break
+                    break;
+                }
+                
+                // Get the final equivalent resistance
+                let totalResistance = 0;
+                
+                if (workingGraph.resistors.length === 1) {
+                    totalResistance = workingGraph.resistors[0].value;
+                    steps.push(`Son eşdeğer direnç: ${totalResistance.toFixed(2)} Ω`);
+                } else if (workingGraph.resistors.length > 1) {
+                    steps.push(`Devre ${workingGraph.resistors.length} dirençle sadeleştirilemedi. Karmaşık devre yapısı.`);
+                    
+                    // Try to estimate based on the remaining structure
+                    totalResistance = estimateComplexCircuit(workingGraph, steps);
+                } else {
+                    steps.push("Hesaplanabilir direnç bulunamadı.");
+                }
+                
+                return {
+                    totalResistance: totalResistance.toFixed(2),
+                    steps
+                };
+            }
+            
+            // Find and reduce series resistors in the circuit
+            function findAndReduceSeriesResistors(graph) {
+                // Look for nodes that connect exactly two resistors
+                for (const nodeId in graph.nodes) {
+                    const resistorsAtNode = graph.nodes[nodeId];
+                    
+                    if (resistorsAtNode.length === 2) {
+                        const r1 = resistorsAtNode[0];
+                        const r2 = resistorsAtNode[1];
+                        
+                        // Check if these resistors are in series
+                        if ((r1.nodeA === parseInt(nodeId) && r2.nodeA === parseInt(nodeId) && r1.nodeB !== r2.nodeB) ||
+                            (r1.nodeA === parseInt(nodeId) && r2.nodeB === parseInt(nodeId) && r1.nodeB !== r2.nodeA) ||
+                            (r1.nodeB === parseInt(nodeId) && r2.nodeA === parseInt(nodeId) && r1.nodeA !== r2.nodeB) ||
+                            (r1.nodeB === parseInt(nodeId) && r2.nodeB === parseInt(nodeId) && r1.nodeA !== r2.nodeA)) {
+                            
+                            // These resistors are in series
+                            const equivalentValue = r1.value + r2.value;
+                            
+                            // Create a new equivalent resistor
+                            const newResistor = {
+                                id: Math.max(...graph.resistors.map(r => r.id)) + 1,
+                                value: equivalentValue,
+                                nodeA: r1.nodeA === parseInt(nodeId) ? r1.nodeB : r1.nodeA,
+                                nodeB: r2.nodeA === parseInt(nodeId) ? r2.nodeB : r2.nodeA
+                            };
+                            
+                            // Update the graph
+                            const newGraph = {
+                                resistors: graph.resistors.filter(r => r.id !== r1.id && r.id !== r2.id),
+                                nodes: {...graph.nodes}
+                            };
+                            
+                            newGraph.resistors.push(newResistor);
+                            
+                            // Update node connections
+                            newGraph.nodes[newResistor.nodeA] = newGraph.nodes[newResistor.nodeA].filter(
+                                r => r.id !== r1.id && r.id !== r2.id
+                            );
+                            newGraph.nodes[newResistor.nodeA].push(newResistor);
+                            
+                            newGraph.nodes[newResistor.nodeB] = newGraph.nodes[newResistor.nodeB].filter(
+                                r => r.id !== r1.id && r.id !== r2.id
+                            );
+                            newGraph.nodes[newResistor.nodeB].push(newResistor);
+                            
+                            // Remove the old node that connected r1 and r2
+                            delete newGraph.nodes[nodeId];
+                            
+                            return {
+                                reduced: true,
+                                graph: newGraph,
+                                step: `Seri bağlı R${r1.id} (${r1.value} Ω) ve R${r2.id} (${r2.value} Ω) dirençlerinin eşdeğeri: ${r1.value} + ${r2.value} = ${equivalentValue.toFixed(2)} Ω`
+                            };
+                        }
+                    }
+                }
+                
+                return { reduced: false };
+            }
+            
+            // Find and reduce parallel resistors in the circuit
+            function findAndReduceParallelResistors(graph) {
+                // Look for resistors that share the same two nodes
+                const resistorsByNodePair = {};
+                
+                graph.resistors.forEach(r => {
+                    // Create a key for the node pair (order doesn't matter)
+                    const nodeKey = [r.nodeA, r.nodeB].sort().join('-');
+                    
+                    if (!resistorsByNodePair[nodeKey]) {
+                        resistorsByNodePair[nodeKey] = [];
+                    }
+                    
+                    resistorsByNodePair[nodeKey].push(r);
+                });
+                
+                // Find node pairs with multiple resistors (parallel)
+                for (const nodeKey in resistorsByNodePair) {
+                    const parallelResistors = resistorsByNodePair[nodeKey];
+                    
+                    if (parallelResistors.length >= 2) {
+                        // Calculate equivalent resistance for parallel resistors
+                        const reciprocalSum = parallelResistors.reduce((sum, r) => sum + (1 / r.value), 0);
+                        const equivalentValue = 1 / reciprocalSum;
+                        
+                        // Create a new equivalent resistor
+                        const [nodeA, nodeB] = nodeKey.split('-').map(Number);
+                        const newResistor = {
+                            id: Math.max(...graph.resistors.map(r => r.id)) + 1,
+                            value: equivalentValue,
+                            nodeA,
+                            nodeB
+                        };
+                        
+                        // Update the graph
+                        const newGraph = {
+                            resistors: graph.resistors.filter(r => !parallelResistors.some(pr => pr.id === r.id)),
+                            nodes: {...graph.nodes}
+                        };
+                        
+                        newGraph.resistors.push(newResistor);
+                        
+                        // Update node connections
+                        newGraph.nodes[nodeA] = newGraph.nodes[nodeA].filter(
+                            r => !parallelResistors.some(pr => pr.id === r.id)
+                        );
+                        newGraph.nodes[nodeA].push(newResistor);
+                        
+                        newGraph.nodes[nodeB] = newGraph.nodes[nodeB].filter(
+                            r => !parallelResistors.some(pr => pr.id === r.id)
+                        );
+                        newGraph.nodes[nodeB].push(newResistor);
+                        
+                        // Format the calculation for display
+                        const calcFormula = `1 / (${parallelResistors.map(r => `1/${r.value}`).join(' + ')}) = ${equivalentValue.toFixed(2)} Ω`;
+                        
+                        return {
+                            reduced: true,
+                            graph: newGraph,
+                            step: `Paralel bağlı ${parallelResistors.map(r => `R${r.id} (${r.value} Ω)`).join(', ')} dirençlerinin eşdeğeri: ${calcFormula}`
+                        };
+                    }
+                }
+                
+                return { reduced: false };
+            }
+            
+            // Estimate the equivalent resistance of a complex circuit
+            function estimateComplexCircuit(graph, steps) {
+                // Try to identify if the remaining circuit is predominantly series or parallel
+                
+                // Count nodes with different numbers of connections
+                const nodeConnectionCounts = {};
+                for (const nodeId in graph.nodes) {
+                    const count = graph.nodes[nodeId].length;
+                    if (!nodeConnectionCounts[count]) {
+                        nodeConnectionCounts[count] = 0;
+                    }
+                    nodeConnectionCounts[count]++;
+                }
+                
+                // If most nodes have 2 connections, it's more like a series circuit
+                const seriesLikelihood = nodeConnectionCounts[2] ? nodeConnectionCounts[2] : 0;
+                
+                // If there are nodes with many connections, it's more like a parallel circuit
+                const parallelLikelihood = Object.keys(nodeConnectionCounts)
+                    .filter(count => parseInt(count) > 2)
+                    .reduce((sum, count) => sum + nodeConnectionCounts[count], 0);
+                
+                if (seriesLikelihood > parallelLikelihood) {
+                    // More like a series circuit
+                    const totalResistance = graph.resistors.reduce((sum, r) => sum + r.value, 0);
+                    steps.push(`Karmaşık devre, seri benzeri yapı tespit edildi. Yaklaşık eşdeğer direnç: ${totalResistance.toFixed(2)} Ω`);
+                    return totalResistance;
+                } else {
+                    // More like a parallel circuit
+                    const reciprocalSum = graph.resistors.reduce((sum, r) => sum + (1 / r.value), 0);
+                    const totalResistance = 1 / reciprocalSum;
+                    steps.push(`Karmaşık devre, paralel benzeri yapı tespit edildi. Yaklaşık eşdeğer direnç: ${totalResistance.toFixed(2)} Ω`);
+                    return totalResistance;
+                }
+            }
+            
+            // Tooltip functions
+            function showTooltip(e, text) {
+                tooltip.textContent = text;
+                tooltip.style.left = `${e.pageX + 10}px`;
+                tooltip.style.top = `${e.pageY + 10}px`;
+                tooltip.style.opacity = '1';
+            }
+            
+            function hideTooltip() {
+                tooltip.style.opacity = '0';
+            }
+        });
+    </script>
+</body>
+</html>
