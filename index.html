@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direnç Devresi Analizi - Güncellenmiş (2025-10-08)</title>
+    <title>Direnç Devresi Analizi</title>
    
     <style>
         /* CSS Variables - Modern Space Theme */
@@ -34,7 +35,7 @@
             background: linear-gradient(135deg, var(--deep-space-blue) 0%, var(--night-purple) 100%);
             color: var(--near-white);
             min-height: 100vh;
-            overflow-y: auto;
+            overflow-y: hidden;
             overflow-x: hidden;
         }
 
@@ -784,6 +785,13 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+
+                 body {
+        
+            overflow-y: auto;
+ 
+        }
+
             .main-content {
                 flex-direction: column;
             }
