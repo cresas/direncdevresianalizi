@@ -1,7 +1,6 @@
-
-<!DOCTYPE html>
-<html lang="tr">
-<head>
+<html lang="tr"><head><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Direnç Devresi Analizi</title>
@@ -1015,7 +1014,7 @@
             <h1>Direnç Devresi Analizi</h1>
             <div class="header-gradient">
                 <div>
-                    <h2>Dirençlerin Bağlanması ve Hesaplanması</h2>
+                    <h3>Dirençlerin Bağlanması ve Hesaplanması</h3>
                     <p style="font-size: 0.9rem; opacity: 0.9;">Seri, Paralel ve Karışık Devreler için İnteraktif Simülasyon</p>
                     <p style="font-size: 0.7rem; opacity: 0.7; margin-top: 0.5rem;"></p>
                 </div>
@@ -1080,7 +1079,7 @@
             <div class="center-area">
                 <!-- Simulation Area -->
                 <div class="simulation-area">
-                    <div id="canvas" class="canvas-container">
+                    <div id="canvas" class="canvas-container" style="min-height: 450px; min-width: 700px; position: relative;">
                         <!-- Simple canvas without zoom container -->
                     </div>
                 </div>
@@ -2912,5 +2911,6 @@
             }
         });
     </script>
-</body>
-</html>
+
+
+</body></html>
